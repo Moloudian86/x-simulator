@@ -18,6 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         HashtagService.getInstance();
+
         mainStage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("signUp-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
