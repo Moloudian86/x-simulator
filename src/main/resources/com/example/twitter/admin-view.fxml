@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="460.0" prefWidth="680.0" stylesheets="@../../../css/StyleAdmin.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UiController.AdminController">
+   <children>
+      <Button fx:id="btnPopularPost" layoutX="228.0" layoutY="44.0" mnemonicParsing="false" onAction="#btnPopularPostAction" prefHeight="59.0" prefWidth="225.0" style="-fx-background-color: #1DA1F2;" text="Popular Posts" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPopularHashtags" layoutX="228.0" layoutY="118.66666412353516" mnemonicParsing="false" onAction="#btnPopularHashtagsAction" prefHeight="59.0" prefWidth="225.0" style="-fx-background-color: #5E259B;" text="Popular Hashtags" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPostsList" layoutX="228.0" layoutY="193.3333282470703" mnemonicParsing="false" onAction="#btnPostsListAction" prefHeight="59.0" prefWidth="225.0" style="-fx-background-image: #10CD7D;" stylesheets="@../../../css/StyleAdmin.css" text="Posts List" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnUsersList" layoutX="228.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnUsersListAction" prefHeight="59.0" prefWidth="225.0" style="-fx-background-color: #FDD100;" text="Users List" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnReports" layoutX="228.0" layoutY="342.6666564941406" mnemonicParsing="false" onAction="#btnReportsAction" prefHeight="59.0" prefWidth="225.0" text="Reports" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="postListLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="396.0" layoutY="208.0" prefHeight="29.0" prefWidth="49.0" style="-fx-border-color: black; -fx-border-radius: 30px;" />
+      <Label fx:id="userListLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="396.0" layoutY="283.0" prefHeight="29.0" prefWidth="49.0" style="-fx-border-color: black; -fx-border-radius: 30px;" />
+      <Button fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="29.0" prefWidth="57.0" style="-fx-background-color: #f21d56;" text="back" />
+   </children>
+</AnchorPane>

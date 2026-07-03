@@ -1,0 +1,68 @@
+.mainButton{
+    -fx-background-color:  #1DA1F2;
+}
+
+.button{
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+
+}
+
+.button:hover{
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 15, 0.5, 0,0);
+    -fx-cursor: hand;
+}
+
+.like{
+    -fx-color: #f21d56;
+
+}
+.image{
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+}
+
+.imageView{
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+}
+
+.problemfield{
+    -fx-effect: dropshadow(gaussian, #e50914, 10, 0.5, 0, 0);
+}
+
+.btnUsername{
+    -fx-effect: dropshadow(gaussian, #ffffff, 10, 0.5, 0, 0);
+
+    -fx-scale-x: 1.00;
+    -fx-scale-y: 1.00;
+    -fx-background-color: #36cd9e;
+    -fx-border-color: #6136cd;
+}
+
+.follow{
+    -fx-background-color:  #1DA1F2;
+}
+.btnFollow{
+    -fx-border-color: #6136cd;
+}
+
+.box{
+    -fx-background-color:white;
+    -fx-padding:10;
+    -fx-border-color:#ccc;
+    -fx-border-radius:5;
+    -fx-background-radius:5;
+    -fx-background-color:#1DA1F2;
+}
+
+.badgeImagePathView{
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}
+
+.hashtag{
+    -fx-background-color: #b951d3;
+}

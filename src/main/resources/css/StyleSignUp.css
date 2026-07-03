@@ -1,0 +1,29 @@
+.text-field:hover{
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 15, 0.5, 0,0);
+}
+
+
+.text-field{
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+}
+
+.mainbutton{
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+}
+
+.mainbutton:hover{
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 15, 0.5, 0,0);
+    -fx-cursor: hand;
+}
+
+.problemfield{
+    -fx-effect: dropshadow(gaussian, #e50914, 10, 0.5, 0, 0);
+}
+.btnEye{
+    -fx-effect: dropshadow(gaussian, #ffffff, 10, 0.5, 0, 0);
+
+}

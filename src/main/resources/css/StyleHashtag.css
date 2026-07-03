@@ -1,0 +1,15 @@
+.button{
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+}
+
+.button:hover{
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 15, 0.5, 0,0);
+    -fx-cursor: hand;
+}
+
+.clicked{
+    -fx-background-color:  #1DA1F2;
+}
