@@ -1,10 +1,15 @@
 package LogicController;
 
+import interfaces.IRepository;
 import model.*;
+import repository.UserRepository;
+
+import java.util.List;
 
 
 public class UserService {
     private static final UserService instance = new UserService();
+    private final  UserRepository userRepository = new UserRepository();
     private static User currentUser;
 
     public static UserService getInstance() {
@@ -81,14 +86,15 @@ public class UserService {
 
 
     public boolean signUp(String fullName,String username,String email,String phone, String password){
-        for (User u : Database.getInstance().getUsers()){
+        List<User> users = userRepository.findAll();
+        for (User u : users){
             if (u.getUsername().equals(username) ||u.getEmail().equals(email) ||u.getPhone().equals(phone)){
                 return false;
             }
         }
         NormalUser user = new NormalUser(fullName,username,email,phone, password);
         user.setAccType("normal");
-        Database.getInstance().getUsers().add(user);
+        userRepository.add(user);
         currentUser = user;
         return true;
     }
@@ -102,22 +108,24 @@ public class UserService {
     }
 
 
-    public boolean Login (String username, String password){
-        for (User u : Database.getInstance().getUsers()) {
-            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                if (u.isBlocked()){
-                    return false;
-                }
-                currentUser = u;
-                return true;
-            }
+    public boolean login(String username, String password){
+        User user = userRepository.login(username, password);
+
+        if (user == null) {
+            return false;
         }
-        return false;
+
+        if (user.isBlocked()) {
+            return false;
+        }
+
+        currentUser = user;
+        return true;
     }
 
     public boolean editProfile(String fullName,String username,String email,String phone, String password,User user ,String bio){
-
-        for (User u : Database.getInstance().getUsers()){
+        List<User> users = userRepository.findAll();
+        for (User u : users){
             //خود کاربرنباشه
             if (u.getId() != user.getId()) {
 
@@ -136,6 +144,7 @@ public class UserService {
         user.setPhone(phone);
         user.setBio(bio);
         user.setPassword(password);
+        userRepository.update(user.getId(), user);
         currentUser = user;
         return true;
     }
@@ -145,21 +154,20 @@ public class UserService {
         if (!UserService.getCurrentUser().getFollowing().contains(profileUser.getId())){
             profileUser.getFollowers().add(UserService.getCurrentUser().getId());
             UserService.getCurrentUser().getFollowing().add(profileUser.getId());
+            userRepository.update(profileUser.getId(),profileUser);
+            userRepository.update(currentUser.getId(),currentUser);
             return true;
         }else{
             profileUser.getFollowers().remove(Integer.valueOf(UserService.getCurrentUser().getId()));
             UserService.getCurrentUser().getFollowing().remove(Integer.valueOf(profileUser.getId()));
+            userRepository.update(profileUser.getId(), profileUser);
+            userRepository.update(currentUser.getId(), currentUser);
             return false;
         }
     }
 
     public User getUserById(int id){
-        for(User user : Database.getInstance().getUsers()){
-            if (user.getId() == id){
-                return user;
-            }
-        }
-        return null;
+        return userRepository.findById(id);
     }
 
     //وقتی کاربر یه پستیو لایک میکنه

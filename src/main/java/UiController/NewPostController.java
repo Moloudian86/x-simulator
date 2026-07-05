@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 
 import model.*;
+import repository.UserRepository;
 
 import java.io.IOException;
 import java.net.URL;
@@ -61,6 +62,7 @@ public class NewPostController implements Initializable {
     private File selectedFile;
 
     private Post editingPost;
+    private final UserRepository userRepository = new UserRepository();
 
 
     @Override
@@ -151,7 +153,7 @@ public class NewPostController implements Initializable {
             return;
         }
         currentUser.setToken(currentUser.getToken() - cost);
-
+        userRepository.update(currentUser.getId(),currentUser);
         Post post = PostService.getInstance().createPost(UserService.getCurrentUser(),text);
         PostService.getInstance().addPost(post);
         if (selectedFile != null) {

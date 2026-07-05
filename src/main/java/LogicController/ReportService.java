@@ -3,9 +3,12 @@ package LogicController;
 import model.Post;
 import model.Report;
 import model.User;
+import repository.UserRepository;
 
 public class ReportService {
     private static ReportService instance;
+    private final UserRepository userRepository = new UserRepository();
+
     public static ReportService getInstance() {
         if (instance == null)
             instance = new ReportService();
@@ -33,6 +36,7 @@ public class ReportService {
         if (reportedUser != null) {
             reportedUser.setBlocked(true);
         }
+        userRepository.update(reportedUser.getId(),reportedUser);
     }
 
     public void unBlockUser(Report report){
@@ -42,5 +46,6 @@ public class ReportService {
         if (reportedUser != null) {
             reportedUser.setBlocked(false);
         }
+        userRepository.update(reportedUser.getId(),reportedUser);
     }
 }

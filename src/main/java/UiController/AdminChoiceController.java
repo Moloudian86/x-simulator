@@ -16,13 +16,17 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.*;
+import repository.UserRepository;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminChoiceController implements Initializable {
     private boolean userBlock = false;
+    private final UserRepository userRepository = new UserRepository();
+
     @FXML
     private ListView<VBox> listView;
 
@@ -92,8 +96,8 @@ public class AdminChoiceController implements Initializable {
 
     public void showUsersList(){
         listView.getItems().clear();
-
-        for (User user : Database.getInstance().getUsers()) {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
 
             VBox userBox = createUserView(user);
 

@@ -1,21 +1,25 @@
 package LogicController;
 
 import model.*;
+import repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchService {
     private static final SearchService instance = new SearchService();
+    private final UserRepository userRepository = new UserRepository();
+
 
     public static SearchService getInstance() {
         return instance;
     }
 
     public List<User> searchUsers(String keyword) {
+        List<User> users = userRepository.findAll();
         List<User> result = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
-        for (User user : Database.getInstance().getUsers()) {
+        for (User user : users) {
             if (user.isBlocked()) {
                 continue;
             }

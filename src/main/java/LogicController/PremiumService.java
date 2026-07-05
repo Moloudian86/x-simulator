@@ -1,10 +1,15 @@
 package LogicController;
 
 import model.*;
+import repository.UserRepository;
+
+import java.util.List;
 
 
 public class PremiumService {
     private static final PremiumService instance = new PremiumService();
+    private final UserRepository userRepository = new UserRepository();
+
 
     public static PremiumService getInstance() {
         return instance;
@@ -43,6 +48,7 @@ public class PremiumService {
             premiumUser = new GoldUser(user.getFullName(), user.getUsername(), user.getEmail(), user.getPhone(), user.getPassword());
             premiumUser.setBadgeImagePath("/img/gold_tik.png");
             premiumUser.setAccType("gold");
+
         }
         copyUserData(user, premiumUser);
         premiumUser.setCredit(user.getCredit() - price);
@@ -50,12 +56,12 @@ public class PremiumService {
         replaceUserInDatabase(user, premiumUser);
         replaceAuthorInPosts(user, premiumUser);
         UserService.setCurrentUser(premiumUser);
+        userRepository.update(premiumUser.getId(),premiumUser);
         return true;
     }
 
     private void copyUserData(User oldUser, User newUser) {
         newUser.setId(oldUser.getId());
-        newUser.setBirthDate(oldUser.getBirthDate());
         newUser.setJoinDate(oldUser.getJoinDate());
         newUser.setProfileImage(oldUser.getProfileImage());
         newUser.setBio(oldUser.getBio());
@@ -69,9 +75,10 @@ public class PremiumService {
     }
 
     private void replaceUserInDatabase(User oldUser, User newUser) {
-        for (int i = 0; i < Database.getInstance().getUsers().size(); i++) {
-            if (Database.getInstance().getUsers().get(i).getId() == oldUser.getId()) {
-                Database.getInstance().getUsers().set(i, newUser);
+        List<User> users = userRepository.findAll();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == oldUser.getId()) {
+                users.set(i, newUser);
                 return;
             }
         }

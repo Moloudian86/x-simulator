@@ -1,11 +1,14 @@
 package LogicController;
 
 import model.*;
+import repository.UserRepository;
 
 import java.util.List;
 
 public class PostService {
     private static PostService instance;
+    private final UserRepository userRepository = new UserRepository();
+
 
     private PostService() {
         loadSamplePosts();
@@ -51,7 +54,8 @@ public class PostService {
         }
 
         // حذف از likedPosts کاربران
-        for (User user : Database.getInstance().getUsers()) {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
             if (user.getLikedPosts().contains(post.getId())){
                 user.getLikedPosts().remove(Integer.valueOf(post.getId()));
             }
@@ -70,9 +74,9 @@ public class PostService {
         NormalUser u1 = new NormalUser("pass", "محمد","pass","pass","pass");
         NormalUser u2 = new NormalUser("pass", "bob","pass","pass","pass");
         NormalUser u3 = new NormalUser("pass", "charlie","pass","pass","pass");
-        Database.getInstance().getUsers().add(u1);
-        Database.getInstance().getUsers().add(u2);
-        Database.getInstance().getUsers().add(u3);
+        userRepository.add(u1);
+        userRepository.add(u2);
+        userRepository.add(u3);
         Post p1 = new Post(u1,"امروز یه اتفاق جالب افتاد");
         Post p2 = new Post(u2,"This is the sample post.");
         Post p3 = new Post(u3,"JavaFX is working.");

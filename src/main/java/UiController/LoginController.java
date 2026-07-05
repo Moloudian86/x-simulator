@@ -52,7 +52,7 @@ public class LoginController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (UserService.getInstance().Login(username,password)){
+        } else if (UserService.getInstance().login(username,password)){
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());

@@ -13,8 +13,8 @@ public class UserRepository implements IRepository<User> {
     @Override
     public boolean add(User user) {
         String sql = "INSERT INTO tblusers" +
-                "(username, password, fullName, email, phone, bio, followers_count, following_count, profileImage, credit, token, blocked, birthDate, joinDate,accType)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(username, password, fullName, email, phone, bio, followers_count, following_count, profileImage, credit, token, blocked, joinDate,accType)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)){
 
@@ -30,9 +30,9 @@ public class UserRepository implements IRepository<User> {
             ps.setInt(10, user.getCredit());
             ps.setInt(11, user.getToken());
             ps.setBoolean(12, user.isBlocked());
-            ps.setDate(13, new java.sql.Date(user.getBirthDate().getTime()));
-            ps.setTimestamp(14, new java.sql.Timestamp(user.getJoinDate().getTime()));
-            ps.setString(15,user.getAccType());
+
+            ps.setTimestamp(13, new java.sql.Timestamp(user.getJoinDate().getTime()));
+            ps.setString(14,user.getAccType());
 
             return ps.executeUpdate() > 0;
 
@@ -60,7 +60,8 @@ public class UserRepository implements IRepository<User> {
     @Override
     public boolean update(int id, User user) {
         String sql = "UPDATE tblusers SET " +
-                "username=?, password=?, fullName=?, email=?, phone=?, bio=?, profileImage=?, accType=? " +
+                "username=?, password=?, fullName=?, email=?, phone=?, bio=?, " +
+                "profileImage=?, accType=?, followers_count=?, following_count=?, credit=?, token=?, blocked=? " +
                 "WHERE id=?";
         try (Connection conn = ConnectionDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)){
@@ -73,7 +74,12 @@ public class UserRepository implements IRepository<User> {
             ps.setString(6,user.getBio());
             ps.setString(7,user.getProfileImage());
             ps.setString(8,user.getAccType());
-            ps.setInt(9,id);
+            ps.setInt(9, user.getFollowers().size());
+            ps.setInt(10, user.getFollowing().size());
+            ps.setInt(11, user.getCredit());
+            ps.setInt(12, user.getToken());
+            ps.setBoolean(13, user.isBlocked());
+            ps.setInt(14, id);
 
             return ps.executeUpdate() > 0;
 
@@ -176,7 +182,7 @@ public class UserRepository implements IRepository<User> {
         user.setProfileImage(rs.getString("profileImage"));
         user.setAccType(type);
         user.setJoinDate(rs.getTimestamp("joinDate"));
-        user.setBirthDate(rs.getDate("birthDate"));
+
 
         return user;
     }

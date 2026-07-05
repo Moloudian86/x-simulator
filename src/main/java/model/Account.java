@@ -9,7 +9,6 @@ public abstract class Account {
     private String username;
     private String password;
     private String fullName;
-    private Date birthDate;
     private String email;
     private String phone;
     private Date joinDate;
@@ -57,14 +56,6 @@ public abstract class Account {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
     }
 
     public String getEmail() {
