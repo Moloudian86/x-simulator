@@ -112,9 +112,9 @@ public class UserRepository implements IRepository<User> {
     public User findById(int id) {
         String sql = "SELECT * FROM tblusers WHERE id=?";
         try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return map(rs);
             }
