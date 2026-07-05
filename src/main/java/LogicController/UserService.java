@@ -87,6 +87,7 @@ public class UserService {
             }
         }
         NormalUser user = new NormalUser(fullName,username,email,phone, password);
+        user.setAccType("normal");
         Database.getInstance().getUsers().add(user);
         currentUser = user;
         return true;

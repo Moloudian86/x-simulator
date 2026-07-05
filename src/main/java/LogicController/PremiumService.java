@@ -38,9 +38,11 @@ public class PremiumService {
         if (type.equals("blue")) {
             premiumUser = new BlueUser(user.getFullName(), user.getUsername(), user.getEmail(), user.getPhone(), user.getPassword());
             premiumUser.setBadgeImagePath("/img/blue_tik.png");
+            premiumUser.setAccType("blue");
         } else {
             premiumUser = new GoldUser(user.getFullName(), user.getUsername(), user.getEmail(), user.getPhone(), user.getPassword());
             premiumUser.setBadgeImagePath("/img/gold_tik.png");
+            premiumUser.setAccType("gold");
         }
         copyUserData(user, premiumUser);
         premiumUser.setCredit(user.getCredit() - price);
@@ -63,6 +65,7 @@ public class PremiumService {
         newUser.getFollowing().addAll(oldUser.getFollowing());
         newUser.getLikedPosts().addAll(oldUser.getLikedPosts());
         newUser.getFavoriteHashtags().addAll(oldUser.getFavoriteHashtags());
+
     }
 
     private void replaceUserInDatabase(User oldUser, User newUser) {

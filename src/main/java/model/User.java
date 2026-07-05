@@ -8,6 +8,7 @@ public abstract class User extends Account{
     private int credit = 20;
     private int token = 150;
     private String bio = "";
+    private String accType;
     private List<Integer> posts = new ArrayList<>();
     private List<Integer> Followers = new ArrayList<>();
     private List<Integer> Following = new ArrayList<>();
@@ -92,4 +93,11 @@ public abstract class User extends Account{
 
     public abstract int calculatePostCost(String text, boolean hasMedia);
 
+    public String getAccType() {
+        return accType;
+    }
+
+    public void setAccType(String accType) {
+        this.accType = accType;
+    }
 }

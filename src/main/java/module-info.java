@@ -3,6 +3,7 @@ module com.example.twitter {
     requires javafx.fxml;
     requires java.desktop;
     requires javafx.media;
+    requires java.sql;
 
 
     opens com.example.twitter to javafx.fxml;
