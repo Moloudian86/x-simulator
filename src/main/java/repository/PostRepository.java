@@ -15,10 +15,10 @@ public class PostRepository implements IRepository<Post> {
     @Override
     public boolean add(Post post) {
         String sql = "insert into tblposts" +
-                "(author_id, content , parent_post_id, view_count, likes_count, blocked, media_path, total_duration, edited)" +
+                "(author_id, content , parent_post_id, view_count, likes_count, blocked, media_path, total_duration, edited) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)){
+             PreparedStatement ps = conn.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS)){
 
             ps.setInt(1,post.getAuthor().getId());
             ps.setString(2, post.getContent());
@@ -33,7 +33,12 @@ public class PostRepository implements IRepository<Post> {
             ps.setInt(8, (int) post.getTotalDuration().toSeconds());
             ps.setBoolean(9, post.isEdited());
 
-            return ps.executeUpdate() > 0;
+            int result = ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                post.setId(rs.getInt(1));
+            }
+            return result > 0;
 
         }catch (SQLException ex){
             ex.printStackTrace();
@@ -59,8 +64,8 @@ public class PostRepository implements IRepository<Post> {
 
     @Override
     public boolean update(int id, Post post) {
-        String sql = "update tblposts set" +
-                "author_id=?, content=?, parent_post_id=?, view_count=?, likes_count=?, blocked=?, media_path=?, total_duration=?, edited=?" +
+        String sql = "update tblposts set " +
+                "author_id=?, content=?, parent_post_id=?, view_count=?, likes_count=?, blocked=?, media_path=?, total_duration=?, edited=? " +
                 "where id=?";
         try (Connection conn = ConnectionDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)){
@@ -77,6 +82,7 @@ public class PostRepository implements IRepository<Post> {
             ps.setString(7, post.getMediaPath());
             ps.setInt(8, (int) post.getTotalDuration().toSeconds());
             ps.setBoolean(9, post.isEdited());
+            ps.setInt(10, id);
 
             return ps.executeUpdate() > 0;
         }catch (SQLException ex){

@@ -1,6 +1,7 @@
 package LogicController;
 
 import model.*;
+import repository.PostRepository;
 import repository.UserRepository;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.List;
 public class SearchService {
     private static final SearchService instance = new SearchService();
     private final UserRepository userRepository = new UserRepository();
+    private final PostRepository postRepository = new PostRepository();
+
 
 
     public static SearchService getInstance() {
@@ -31,9 +34,10 @@ public class SearchService {
     }
 
     public List<Post> searchPosts(String keyword){
+        List<Post> posts = postRepository.findAll();
         List<Post> result = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
-        for (Post post : Database.getInstance().getPosts()){
+        for (Post post : posts){
             if (post.isBlocked()) {
                 continue;
             }

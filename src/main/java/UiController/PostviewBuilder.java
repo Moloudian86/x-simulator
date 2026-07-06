@@ -209,7 +209,7 @@ public class PostviewBuilder {
 
         HBox buttons = new HBox(10, likeButton, likesLabel, commentButton, viewsLabel, share);
 
-        if (currentUser != null && post.getAuthor().equals(UserService.getCurrentUser())) {
+        if (currentUser != null && post.getAuthor().getId() == currentUser.getId()) {
             Button deleteButton = createDeleteButton(post);
             buttons.getChildren().add(deleteButton);
 
@@ -250,12 +250,14 @@ public class PostviewBuilder {
                 post.getLikeIds().remove(Integer.valueOf(currentUser.getId()));
                 currentUser.getLikedPosts().remove(Integer.valueOf(post.getId()));
                 likeButton.getStyleClass().remove("like");
+                PostService.getInstance().updatePost(post);
             } else {
                 post.like();
                 post.getLikeIds().add(currentUser.getId());
                 currentUser.getLikedPosts().add(post.getId());
                 UserService.getInstance().favoriteHashtagsFromPost(currentUser, post);
                 likeButton.getStyleClass().add("like");
+                PostService.getInstance().updatePost(post);
             }
 
             likesLabel.setText(String.valueOf(post.getLikesCount()));
@@ -276,6 +278,7 @@ public class PostviewBuilder {
                 if (currentUser != null && !post.getViewIds().contains(currentUser.getId())) {
                     post.view();
                     post.getViewIds().add(currentUser.getId());
+                    PostService.getInstance().updatePost(post);
                 }
                 FXMLLoader loader = new FXMLLoader(Main.class.getResource("replyPost-view.fxml"));
                 Scene scene = new Scene(loader.load());

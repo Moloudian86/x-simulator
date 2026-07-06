@@ -9,14 +9,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import model.Database;
+import model.Post;
+import repository.PostRepository;
 import repository.UserRepository;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminController implements Initializable {
     private final UserRepository userRepository = new UserRepository();
+    private final PostRepository postRepository = new PostRepository();
+
 
     @FXML
     private Button btnPopularHashtags;
@@ -119,9 +124,10 @@ public class AdminController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        List<Post> posts = postRepository.findAll();
         btnPostsList.getStyleClass().add("btnPostList");
         btnReports.getStyleClass().add("btnReports");
-        postListLabel.setText(String.valueOf(Database.getInstance().getPosts().size()));
+        postListLabel.setText(String.valueOf(posts.size()));
         userListLabel.setText(String.valueOf(userRepository.findAll().size()));
     }
 }

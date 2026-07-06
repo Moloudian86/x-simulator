@@ -21,12 +21,14 @@ public class ReportService {
         if (reportedPost != null) {
             reportedPost.setBlocked(true);
         }
-
+        PostService.getInstance().updatePost(reportedPost);
     }
 
     public void reject(Report report, Post reportedPost){
         report.setStatus(model.Status.REJECTED);
         reportedPost.setBlocked(false);
+        PostService.getInstance().updatePost(reportedPost);
+
     }
 
     public void blockUser(Report report){

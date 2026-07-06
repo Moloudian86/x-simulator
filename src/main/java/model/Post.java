@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 public class Post {
-    private static int idCounter = 0;
 
     private int id;
     private User author;
@@ -22,12 +21,11 @@ public class Post {
     private boolean blocked = false;
     private List<Integer> viewIds = new ArrayList<>();
     private String mediaPath;
-    private Duration totalDuration;
+    private Duration totalDuration = Duration.ZERO;
     private boolean edited = false;
 
 // رعایت اصل اول سالید : فقط نگه داری داده ها
     public Post(User author,String content){
-        this.id = ++idCounter;
         this.author = author;
         this.content = content;
         this.creationDate = new Date();

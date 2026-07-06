@@ -22,12 +22,14 @@ import model.Database;
 import model.Post;
 import model.PremiumUser;
 import model.User;
+import repository.PostRepository;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public class ReplyPostController{
+    private final PostRepository postRepository = new PostRepository();
 
     private Post parentPost;
 
@@ -88,8 +90,9 @@ public class ReplyPostController{
 
 
     private void loadPosts() {
+        List<Post> postsDB = postRepository.findAll();
         listViewReply.getItems().clear();
-        List<Post> posts = Database.getInstance().getPosts();
+        List<Post> posts = postsDB;
         for (int i = posts.size() - 1; i >= 0; i--) {
             Post post = posts.get(i);
             if (post.isBlocked()) {
@@ -116,6 +119,7 @@ public class ReplyPostController{
             if (selectedFile != null) {
                 editingReply.setMediaPath(selectedFile.getAbsolutePath());
             }
+            PostService.getInstance().updatePost(editingReply);
             textAreaReply.clear();
             fileLable.setText("");
             selectedFile = null;

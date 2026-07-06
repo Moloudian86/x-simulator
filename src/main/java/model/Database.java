@@ -6,7 +6,7 @@ import java.util.*;
 public class Database {
     private static Database instance;
 
-    private List<Post> posts = new ArrayList<>();
+
     private List<Report> reports = new ArrayList<>();
     private List<Hashtag> hashtags = new ArrayList<>();
 
@@ -21,15 +21,6 @@ public class Database {
         Database.instance = instance;
     }
 
-
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
 
     public List<Report> getReports() {
         return reports;

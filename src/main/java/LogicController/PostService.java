@@ -1,6 +1,7 @@
 package LogicController;
 
 import model.*;
+import repository.PostRepository;
 import repository.UserRepository;
 
 import java.util.List;
@@ -8,10 +9,11 @@ import java.util.List;
 public class PostService {
     private static PostService instance;
     private final UserRepository userRepository = new UserRepository();
+    private final PostRepository postRepository = new PostRepository();
 
 
     private PostService() {
-        loadSamplePosts();
+
     }
 
     public static PostService getInstance() {
@@ -28,9 +30,11 @@ public class PostService {
 
 
     public void addPost(Post post){
-        Database.getInstance().getPosts().add(post);
+        postRepository.add(post);
     }
     public void removePost(Post post) {
+        List<Post> posts = postRepository.findAll();
+
         // حذف آیدی پست از هشتگ‌ها
         for (Hashtag hashtag : post.getHashtags()) {
             hashtag.getPostIds().remove(Integer.valueOf(post.getId()));
@@ -45,8 +49,8 @@ public class PostService {
         }
 
         // اگر این پست اصلی است، ریپلای هاش هم حذف بشه
-        for (int i = Database.getInstance().getPosts().size() - 1; i >= 0; i--) {
-            Post p = Database.getInstance().getPosts().get(i);
+        for (int i = posts.size() - 1; i >= 0; i--) {
+            Post p = posts.get(i);
 
             if (p.getParentPostId() != null && p.getParentPostId().equals(post.getId())) {
                 removePost(p);
@@ -62,44 +66,25 @@ public class PostService {
 
         }
 
-        Database.getInstance().getPosts().remove(post);
+        postRepository.remove(post.getId());
+    }
+
+    public boolean updatePost(Post post) {
+        return postRepository.update(post.getId(), post);
     }
 
     public List<Post> getPosts(){
-        return Database.getInstance().getPosts();
+        List<Post> posts = postRepository.findAll();
+        return posts;
     }
 
 
-    private void loadSamplePosts() {
-        NormalUser u1 = new NormalUser("pass", "محمد","pass","pass","pass");
-        NormalUser u2 = new NormalUser("pass", "bob","pass","pass","pass");
-        NormalUser u3 = new NormalUser("pass", "charlie","pass","pass","pass");
-        userRepository.add(u1);
-        userRepository.add(u2);
-        userRepository.add(u3);
-        Post p1 = new Post(u1,"امروز یه اتفاق جالب افتاد");
-        Post p2 = new Post(u2,"This is the sample post.");
-        Post p3 = new Post(u3,"JavaFX is working.");
 
-        p1.getHashtags().add(HashtagService.getInstance().getART());
-        p1.getHashtags().add(HashtagService.getInstance().getGAMING());
-        HashtagService.getInstance().getART().getPostIds().add(p1.getId());
-        HashtagService.getInstance().getGAMING().getPostIds().add(p1.getId());
-
-        p2.getHashtags().add(HashtagService.getInstance().getNEWS());
-        HashtagService.getInstance().getNEWS().getPostIds().add(p2.getId());
-
-        p3.getHashtags().add(HashtagService.getInstance().getTECHNOLOGY());
-        HashtagService.getInstance().getTECHNOLOGY().getPostIds().add(p3.getId());
-
-        addPost(p1);
-        addPost(p2);
-        addPost(p3);
-    }
 
     public Post getPostById(int id){
+        List<Post> posts = postRepository.findAll();
 
-        for(Post post : Database.getInstance().getPosts()){
+        for(Post post : posts){
 
             if(post.getId() == id){
                 return post;
@@ -121,11 +106,13 @@ public class PostService {
 
 
     public Post[] getPopularPosts() {
+        List<Post> posts = postRepository.findAll();
 
-        Post[] popularPosts = new Post[Database.getInstance().getPosts().size()];
 
-        for (int i = 0; i < Database.getInstance().getPosts().size(); i++) {
-            popularPosts[i] = Database.getInstance().getPosts().get(i);
+        Post[] popularPosts = new Post[posts.size()];
+
+        for (int i = 0; i < posts.size(); i++) {
+            popularPosts[i] = posts.get(i);
         }
         for (int i = 0; i < popularPosts.length; i++) {
             for (int j = i + 1; j < popularPosts.length; j++) {
@@ -140,20 +127,13 @@ public class PostService {
     }
 
     public Post[] getَAllPosts() {
+        List<Post> posts = postRepository.findAll();
 
-        Post[] allPosts = new Post[Database.getInstance().getPosts().size()];
+        Post[] allPosts = new Post[posts.size()];
 
-        for (int i = 0; i < Database.getInstance().getPosts().size(); i++) {
-            allPosts[i] = Database.getInstance().getPosts().get(i);
+        for (int i = 0; i < posts.size(); i++) {
+            allPosts[i] = posts.get(i);
         }
         return allPosts;
-    }
-
-
-
-
-
-    public java.util.List<Post> getAllPosts() {
-        return Database.getInstance().getPosts();
     }
 }

@@ -16,7 +16,7 @@ public class UserRepository implements IRepository<User> {
                 "(username, password, fullName, email, phone, bio, followers_count, following_count, profileImage, credit, token, blocked, joinDate,accType)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)){
+             PreparedStatement ps = conn.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS)){
 
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
@@ -34,7 +34,12 @@ public class UserRepository implements IRepository<User> {
             ps.setTimestamp(13, new java.sql.Timestamp(user.getJoinDate().getTime()));
             ps.setString(14,user.getAccType());
 
-            return ps.executeUpdate() > 0;
+            int result = ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                user.setId(rs.getInt(1));
+            }
+            return result > 0;
 
         }catch (SQLException ex){
             ex.printStackTrace();
@@ -112,9 +117,9 @@ public class UserRepository implements IRepository<User> {
     public User findById(int id) {
         String sql = "SELECT * FROM tblusers WHERE id=?";
         try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return map(rs);
             }
@@ -154,8 +159,8 @@ public class UserRepository implements IRepository<User> {
                     rs.getString("username"),
                     rs.getString("email"),
                     rs.getString("phone"),
-                    rs.getString("password")
-            );
+                    rs.getString("password"));
+            user.setBadgeImagePath("/img/gold_tik.png");
         }
         else if ("blue".equals(type)){
             user = new BlueUser(rs.getString("fullName"),
@@ -163,6 +168,7 @@ public class UserRepository implements IRepository<User> {
                     rs.getString("email"),
                     rs.getString("phone"),
                     rs.getString("password"));
+            user.setBadgeImagePath("/img/blue_tik.png");
         }
         else {
             user = new NormalUser(

@@ -21,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import repository.PostRepository;
+
 import java.io.File;
 
 
@@ -33,6 +35,7 @@ import java.util.ResourceBundle;
 
 
 public class HomeController implements Initializable {
+    private final PostRepository postRepository = new PostRepository();
 
 
     @FXML
@@ -185,10 +188,11 @@ public class HomeController implements Initializable {
     }
 
     private void loadPosts() {
+        List<Post> postsDB = postRepository.findAll();
         listView.getItems().clear();
         User currentUser = UserService.getCurrentUser();
         List<Post> posts = new ArrayList<>();
-        for (Post post : Database.getInstance().getPosts()) {
+        for (Post post : postsDB) {
             posts.add(post);
         }
         for (int i = 0; i < posts.size(); i++) {
@@ -230,8 +234,9 @@ public class HomeController implements Initializable {
 
     @FXML
     void btnFilterNewPostsAction(ActionEvent event) {
+        List<Post> postsDB = postRepository.findAll();
         listView.getItems().clear();
-        List<Post> posts = Database.getInstance().getPosts();
+        List<Post> posts = postsDB;
         for (int i = posts.size() - 1; i >= 0; i--) {
             Post post = posts.get(i);
             if (post.isBlocked()) {

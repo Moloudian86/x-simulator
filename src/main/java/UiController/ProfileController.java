@@ -17,6 +17,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import model.*;
 import LogicController.*;
+import repository.PostRepository;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
+    private final PostRepository postRepository = new PostRepository();
+
 
     @FXML
     private Label bioLable;
@@ -192,8 +195,9 @@ public class ProfileController implements Initializable {
     }
 
     private void loadPosts(User user) {
+        List<Post> postsDB = postRepository.findAll();
         listView.getItems().clear();
-        List<Post> posts = Database.getInstance().getPosts();
+        List<Post> posts = postsDB;
         for (int i = posts.size() - 1; i >= 0; i--) {
             Post post = posts.get(i);
             if (post.isBlocked()) {

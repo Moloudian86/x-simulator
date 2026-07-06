@@ -3,8 +3,6 @@ package model;
 import java.util.Date;
 
 public abstract class Account {
-    private static int idCounter = 0;
-
     private int id;
     private String username;
     private String password;
@@ -15,7 +13,6 @@ public abstract class Account {
 
 
     public Account(String fullName,String username,String email,String phone, String password){
-        this.id = ++idCounter;
         this.fullName = fullName;
         this.username = username;
         this.email = email;

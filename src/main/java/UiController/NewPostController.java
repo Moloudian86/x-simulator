@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 
 import model.*;
+import repository.PostRepository;
 import repository.UserRepository;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class NewPostController implements Initializable {
+    private final PostRepository postRepository = new PostRepository();
 
     @FXML
     private Button btnPremium;
@@ -127,6 +129,7 @@ public class NewPostController implements Initializable {
             if (selectedFile != null) {
                 editingPost.setMediaPath(selectedFile.getAbsolutePath());
             }
+            PostService.getInstance().updatePost(editingPost);
             editingPost = null;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));

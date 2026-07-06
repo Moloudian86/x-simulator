@@ -1,6 +1,7 @@
 package LogicController;
 
 import model.*;
+import repository.PostRepository;
 import repository.UserRepository;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 public class PremiumService {
     private static final PremiumService instance = new PremiumService();
     private final UserRepository userRepository = new UserRepository();
+    private final PostRepository postRepository = new PostRepository();
+
 
 
     public static PremiumService getInstance() {
@@ -85,7 +88,8 @@ public class PremiumService {
     }
 
     private void replaceAuthorInPosts(User oldUser, User newUser) {
-        for (Post post : Database.getInstance().getPosts()) {
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
             if (post.getAuthor().getId() == oldUser.getId()) {
                 post.setAuthor(newUser);
             }
