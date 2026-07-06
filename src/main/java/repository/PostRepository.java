@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PostRepository implements IRepository<Post> {
     private final UserRepository userRepository = new UserRepository();
+    private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
 
 
     @Override
@@ -148,6 +149,7 @@ public class PostRepository implements IRepository<Post> {
         post.setMediaPath(rs.getString("media_path"));
         post.setTotalDuration(javafx.util.Duration.seconds(rs.getInt("total_duration")));
         post.setEdited(rs.getBoolean("edited"));
+        post.setHashtags(postHashtagRepository.getPostHashtags(post.getId()));
 
         return post;
     }

@@ -1,6 +1,7 @@
 package LogicController;
 
 import model.*;
+import repository.HashtagRepository;
 import repository.PostRepository;
 import repository.UserRepository;
 
@@ -11,6 +12,8 @@ public class SearchService {
     private static final SearchService instance = new SearchService();
     private final UserRepository userRepository = new UserRepository();
     private final PostRepository postRepository = new PostRepository();
+    private final HashtagRepository hashtagRepository = new HashtagRepository();
+
 
 
 
@@ -53,8 +56,9 @@ public class SearchService {
 
     public List<Hashtag> searchHashtags(String keyword){
         List<Hashtag> result = new ArrayList<>();
+        List<Hashtag> hashtags = hashtagRepository.findAll();
         String lowerKeyword = keyword.toLowerCase();
-        for (Hashtag hashtag : Database.getInstance().getHashtags()){
+        for (Hashtag hashtag : hashtags){
             if (hashtag.getTitle().toLowerCase().contains(lowerKeyword)){
                 result.add(hashtag);
             }

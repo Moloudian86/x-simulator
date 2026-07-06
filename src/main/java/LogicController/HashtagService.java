@@ -3,8 +3,16 @@ package LogicController;
 import model.Database;
 import model.Hashtag;
 import model.Post;
+import repository.HashtagRepository;
+import repository.PostHashtagRepository;
+import repository.PostRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HashtagService {
+        private final HashtagRepository hashtagRepository = new HashtagRepository();
+        private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
 
         private Hashtag NEWS = new Hashtag("#News");
         private Hashtag SPORTS = new Hashtag("#Sports");
@@ -28,12 +36,13 @@ public class HashtagService {
         }
 
         public void addHashtag(Hashtag hashtag){
-                for (Hashtag h : Database.getInstance().getHashtags()){
+                List<Hashtag> hashtags = hashtagRepository.findAll();
+                for (Hashtag h : hashtags){
                         if (h.getTitle().equalsIgnoreCase(hashtag.getTitle())){
                                 return;
                         }
                 }
-                Database.getInstance().getHashtags().add(hashtag);
+                hashtagRepository.add(hashtag);
         }
 
         public void getHashtagFromPost(Post post){
@@ -70,9 +79,10 @@ public class HashtagService {
         }
 
         public Hashtag[] getPopularHashtags(){
-                Hashtag[] popularHashtags = new Hashtag[Database.getInstance().getHashtags().size()];
-                for (int i = 0; i< Database.getInstance().getHashtags().size();i++) {
-                        popularHashtags[i] = Database.getInstance().getHashtags().get(i);
+                List<Hashtag> hashtags = hashtagRepository.findAll();
+                Hashtag[] popularHashtags = new Hashtag[hashtags.size()];
+                for (int i = 0; i< hashtags.size();i++) {
+                        popularHashtags[i] = hashtags.get(i);
                 }
                 for (int i = 0; i < popularHashtags.length; i++) {
                         for (int j = i + 1; j < popularHashtags.length; j++) {
@@ -88,21 +98,11 @@ public class HashtagService {
 
 
         public Hashtag getHashtagById(int id){
-              for (Hashtag hashtag : Database.getInstance().getHashtags()){
-                      if (hashtag.getId() == id){
-                              return hashtag;
-                      }
-              }
-                return null;
+               return hashtagRepository.findById(id);
         }
 
         public Hashtag getHashtagByTitle(String title) {
-                for (Hashtag hashtag : Database.getInstance().getHashtags()) {
-                        if (hashtag.getTitle().equalsIgnoreCase(title)) {
-                                return hashtag;
-                        }
-                }
-                return null;
+               return hashtagRepository.findByTitle(title);
         }
 
         public Hashtag getNEWS() {

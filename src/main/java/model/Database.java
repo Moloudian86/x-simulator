@@ -8,7 +8,6 @@ public class Database {
 
 
     private List<Report> reports = new ArrayList<>();
-    private List<Hashtag> hashtags = new ArrayList<>();
 
 
     public static Database getInstance(){
@@ -30,11 +29,4 @@ public class Database {
         this.reports = reports;
     }
 
-    public List<Hashtag> getHashtags() {
-        return hashtags;
-    }
-
-    public void setHashtags(List<Hashtag> hashtags) {
-        this.hashtags = hashtags;
-    }
 }

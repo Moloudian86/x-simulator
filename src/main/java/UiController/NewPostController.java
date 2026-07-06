@@ -158,12 +158,11 @@ public class NewPostController implements Initializable {
         currentUser.setToken(currentUser.getToken() - cost);
         userRepository.update(currentUser.getId(),currentUser);
         Post post = PostService.getInstance().createPost(UserService.getCurrentUser(),text);
-        PostService.getInstance().addPost(post);
         if (selectedFile != null) {
             post.setMediaPath(selectedFile.getAbsolutePath());
         }
         HashtagService.getInstance().getHashtagFromPost(post);
-
+        PostService.getInstance().addPost(post);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());

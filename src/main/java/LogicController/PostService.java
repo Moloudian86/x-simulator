@@ -1,6 +1,7 @@
 package LogicController;
 
 import model.*;
+import repository.PostHashtagRepository;
 import repository.PostRepository;
 import repository.UserRepository;
 
@@ -10,6 +11,7 @@ public class PostService {
     private static PostService instance;
     private final UserRepository userRepository = new UserRepository();
     private final PostRepository postRepository = new PostRepository();
+    private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
 
 
     private PostService() {
@@ -31,6 +33,9 @@ public class PostService {
 
     public void addPost(Post post){
         postRepository.add(post);
+        for(Hashtag hashtag : post.getHashtags()){
+            postHashtagRepository.add(post.getId(), hashtag.getId());
+        }
     }
     public void removePost(Post post) {
         List<Post> posts = postRepository.findAll();
@@ -69,8 +74,9 @@ public class PostService {
         postRepository.remove(post.getId());
     }
 
-    public boolean updatePost(Post post) {
-        return postRepository.update(post.getId(), post);
+    public void updatePost(Post post) {
+        postRepository.update(post.getId(), post);
+        postHashtagRepository.updatePostHashtags(post.getId(), post.getHashtags());
     }
 
     public List<Post> getPosts(){
