@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hashtag {
-    private static int idCounter = 0;
     private int id;
     private String title;
     private List<Integer> postIds = new ArrayList<>();
 
 
     public Hashtag(String title){
-        this.id = ++idCounter;
         this.title = title;
     }
 
@@ -26,6 +24,10 @@ public class Hashtag {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public List<Integer> getPostIds() {
