@@ -15,13 +15,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.*;
 import javafx.util.Duration;
 import model.*;
+import repository.ReportRepository;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostviewBuilder {
+    private final static ReportRepository reportRepository = new ReportRepository();
 
     public static VBox createPostView(Post post) {
+
         User currentUser = UserService.getCurrentUser();
 
         HBox userAndTime = createHeader(post);
@@ -334,7 +339,7 @@ public class PostviewBuilder {
             dialog.showAndWait().ifPresent(reason -> {
                 Report newReport = new Report(currentUser.getId(), post.getAuthor().getId(), post.getId(), reason);
 
-                Database.getInstance().getReports().add(newReport);
+                reportRepository.add(newReport);
             });
         });
 

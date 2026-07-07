@@ -7,7 +7,7 @@ public class Database {
     private static Database instance;
 
 
-    private List<Report> reports = new ArrayList<>();
+
 
 
     public static Database getInstance(){
@@ -20,13 +20,5 @@ public class Database {
         Database.instance = instance;
     }
 
-
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
 
 }

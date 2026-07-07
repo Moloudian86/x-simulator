@@ -55,4 +55,5 @@ public class Report {
     public void setStatus(Status status) {
         this.status = status;
     }
+
 }

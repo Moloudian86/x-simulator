@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.*;
+import repository.ReportRepository;
 import repository.UserRepository;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.util.ResourceBundle;
 public class AdminChoiceController implements Initializable {
     private boolean userBlock = false;
     private final UserRepository userRepository = new UserRepository();
+    private final ReportRepository reportRepository = new ReportRepository();
 
     @FXML
     private ListView<VBox> listView;
@@ -153,8 +155,8 @@ public class AdminChoiceController implements Initializable {
 
     public void showReports(){
         listView.getItems().clear();
-
-        for (Report report : Database.getInstance().getReports()){
+        List<Report> reports = reportRepository.findAll();
+        for (Report report : reports){
             if (report.getStatus() == Status.REJECTED){
                 continue;
             }
