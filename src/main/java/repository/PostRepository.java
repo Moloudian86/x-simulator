@@ -12,7 +12,7 @@ public class PostRepository implements IRepository<Post> {
     private final UserRepository userRepository = new UserRepository();
     private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
     private final PostLikeRepository postLikeRepository = new PostLikeRepository();
-
+    private final PostViewRepository postViewRepository = new PostViewRepository();
 
     @Override
     public boolean add(Post post) {
@@ -152,7 +152,7 @@ public class PostRepository implements IRepository<Post> {
         post.setEdited(rs.getBoolean("edited"));
         post.setHashtags(postHashtagRepository.getPostHashtags(post.getId()));
         post.setLikeIds(postLikeRepository.getLikeIds(post.getId()));
-
+        post.setViewIds(postViewRepository.getViewIds(post.getId()));
         return post;
     }
 }

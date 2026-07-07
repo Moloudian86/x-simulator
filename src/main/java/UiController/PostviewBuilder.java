@@ -276,10 +276,8 @@ public class PostviewBuilder {
         commentButton.setGraphic(commentView);
         commentButton.setOnAction(e -> {
             try {
-                if (currentUser != null && !post.getViewIds().contains(currentUser.getId())) {
-                    post.view();
-                    post.getViewIds().add(currentUser.getId());
-                    PostService.getInstance().updatePost(post);
+                if (currentUser != null) {
+                    PostService.getInstance().viewPost(post, currentUser);
                 }
                 FXMLLoader loader = new FXMLLoader(Main.class.getResource("replyPost-view.fxml"));
                 Scene scene = new Scene(loader.load());

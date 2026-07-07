@@ -1,10 +1,7 @@
 package LogicController;
 
 import model.*;
-import repository.PostHashtagRepository;
-import repository.PostLikeRepository;
-import repository.PostRepository;
-import repository.UserRepository;
+import repository.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ public class PostService {
     private final PostRepository postRepository = new PostRepository();
     private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
     private final PostLikeRepository postLikeRepository = new PostLikeRepository();
-
+    private final PostViewRepository postViewRepository = new PostViewRepository();
 
     private PostService() {
 
@@ -113,6 +110,16 @@ public class PostService {
     public void unlikePost(Post post, User user){
         post.disLike();
         postLikeRepository.remove(post.getId(), user.getId());
+        postRepository.update(post.getId(), post);
+    }
+
+    public void viewPost(Post post, User user) {
+        if (post.getViewIds().contains(user.getId())) {
+            return;
+        }
+        post.view();
+        post.getViewIds().add(user.getId());
+        postViewRepository.add(post.getId(), user.getId());
         postRepository.update(post.getId(), post);
     }
 
