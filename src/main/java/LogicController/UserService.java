@@ -2,6 +2,7 @@ package LogicController;
 
 import interfaces.IRepository;
 import model.*;
+import repository.UserFollowRepository;
 import repository.UserRepository;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class UserService {
     private static final UserService instance = new UserService();
     private final  UserRepository userRepository = new UserRepository();
+    private final UserFollowRepository userFollowRepository = new UserFollowRepository();
     private static User currentUser;
 
     public static UserService getInstance() {
@@ -152,6 +154,7 @@ public class UserService {
 
     public boolean follow(User profileUser){
         if (!UserService.getCurrentUser().getFollowing().contains(profileUser.getId())){
+            userFollowRepository.follow(UserService.getCurrentUser().getId(), profileUser.getId());
             profileUser.getFollowers().add(UserService.getCurrentUser().getId());
             UserService.getCurrentUser().getFollowing().add(profileUser.getId());
             userRepository.update(profileUser.getId(),profileUser);
@@ -159,6 +162,7 @@ public class UserService {
             return true;
         }else{
             profileUser.getFollowers().remove(Integer.valueOf(UserService.getCurrentUser().getId()));
+            userFollowRepository.unfollow(UserService.getCurrentUser().getId(), profileUser.getId());
             UserService.getCurrentUser().getFollowing().remove(Integer.valueOf(profileUser.getId()));
             userRepository.update(profileUser.getId(), profileUser);
             userRepository.update(currentUser.getId(), currentUser);

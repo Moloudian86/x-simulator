@@ -35,6 +35,26 @@ public abstract class User extends Account{
         return Following;
     }
 
+    public void setPosts(List<Integer> posts) {
+        this.posts = posts;
+    }
+
+    public void setFollowers(List<Integer> followers) {
+        Followers = followers;
+    }
+
+    public void setFollowing(List<Integer> following) {
+        Following = following;
+    }
+
+    public void setLikedPosts(List<Integer> likedPosts) {
+        this.likedPosts = likedPosts;
+    }
+
+    public void setFavoriteHashtags(List<Integer> favoriteHashtags) {
+        this.favoriteHashtags = favoriteHashtags;
+    }
+
     public List<Integer> getLikedPosts() {
         return likedPosts;
     }

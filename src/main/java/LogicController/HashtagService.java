@@ -39,6 +39,7 @@ public class HashtagService {
                 List<Hashtag> hashtags = hashtagRepository.findAll();
                 for (Hashtag h : hashtags){
                         if (h.getTitle().equalsIgnoreCase(hashtag.getTitle())){
+                                hashtag.setId(h.getId());
                                 return;
                         }
                 }

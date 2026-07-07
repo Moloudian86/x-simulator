@@ -139,6 +139,16 @@ public class ProfileController implements Initializable {
             btnFollow.setVisible(true);
             btnFollow.setManaged(true);
 
+             if (UserService.getCurrentUser().getFollowing().contains(user.getId())) {
+                 btnFollow.setText("Un Follow");
+                 btnFollow.getStyleClass().remove("follow");
+             } else {
+                 btnFollow.setText("Follow");
+                 if (!btnFollow.getStyleClass().contains("follow")) {
+                     btnFollow.getStyleClass().add("follow");
+                 }
+             }
+
             btnProfileImage.setVisible(false);
             btnProfileImage.setManaged(false);
 

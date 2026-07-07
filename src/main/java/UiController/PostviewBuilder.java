@@ -246,18 +246,14 @@ public class PostviewBuilder {
             }
 
             if (post.getLikeIds().contains(currentUser.getId())) {
-                post.disLike();
-                post.getLikeIds().remove(Integer.valueOf(currentUser.getId()));
+                PostService.getInstance().unlikePost(post,currentUser);
                 currentUser.getLikedPosts().remove(Integer.valueOf(post.getId()));
                 likeButton.getStyleClass().remove("like");
-                PostService.getInstance().updatePost(post);
             } else {
-                post.like();
-                post.getLikeIds().add(currentUser.getId());
+                PostService.getInstance().likePost(post,currentUser);
                 currentUser.getLikedPosts().add(post.getId());
                 UserService.getInstance().favoriteHashtagsFromPost(currentUser, post);
                 likeButton.getStyleClass().add("like");
-                PostService.getInstance().updatePost(post);
             }
 
             likesLabel.setText(String.valueOf(post.getLikesCount()));

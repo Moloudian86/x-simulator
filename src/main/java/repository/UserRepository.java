@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class UserRepository implements IRepository<User> {
+    private final UserFollowRepository userFollowRepository = new UserFollowRepository();
+
     @Override
     public boolean add(User user) {
         String sql = "INSERT INTO tblusers" +
@@ -188,6 +190,8 @@ public class UserRepository implements IRepository<User> {
         user.setProfileImage(rs.getString("profileImage"));
         user.setAccType(type);
         user.setJoinDate(rs.getTimestamp("joinDate"));
+        user.setFollowing(userFollowRepository.getFollowingIds(user.getId()));
+        user.setFollowers(userFollowRepository.getFollowerIds(user.getId()));
 
 
         return user;

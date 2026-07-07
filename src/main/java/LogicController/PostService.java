@@ -2,6 +2,7 @@ package LogicController;
 
 import model.*;
 import repository.PostHashtagRepository;
+import repository.PostLikeRepository;
 import repository.PostRepository;
 import repository.UserRepository;
 
@@ -12,6 +13,7 @@ public class PostService {
     private final UserRepository userRepository = new UserRepository();
     private final PostRepository postRepository = new PostRepository();
     private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
+    private final PostLikeRepository postLikeRepository = new PostLikeRepository();
 
 
     private PostService() {
@@ -101,6 +103,18 @@ public class PostService {
         return null;
     }
 
+    public void likePost(Post post, User user){
+        post.like();
+        postLikeRepository.add(post.getId(), user.getId());
+        postRepository.update(post.getId(), post);
+
+    }
+
+    public void unlikePost(Post post, User user){
+        post.disLike();
+        postLikeRepository.remove(post.getId(), user.getId());
+        postRepository.update(post.getId(), post);
+    }
 
     public void addAnswerPost(Post parentPost,Post post){
         parentPost.getAnswerPosts().add(post.getId());

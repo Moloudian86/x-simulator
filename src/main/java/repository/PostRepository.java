@@ -11,6 +11,7 @@ import java.util.List;
 public class PostRepository implements IRepository<Post> {
     private final UserRepository userRepository = new UserRepository();
     private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
+    private final PostLikeRepository postLikeRepository = new PostLikeRepository();
 
 
     @Override
@@ -150,6 +151,7 @@ public class PostRepository implements IRepository<Post> {
         post.setTotalDuration(javafx.util.Duration.seconds(rs.getInt("total_duration")));
         post.setEdited(rs.getBoolean("edited"));
         post.setHashtags(postHashtagRepository.getPostHashtags(post.getId()));
+        post.setLikeIds(postLikeRepository.getLikeIds(post.getId()));
 
         return post;
     }
