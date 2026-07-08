@@ -1,11 +1,13 @@
 package LogicController;
 
+import exception.*;
 import interfaces.IRepository;
 import model.*;
 import repository.UserFollowRepository;
 import repository.UserRepository;
 
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 
 public class UserService {
@@ -71,17 +73,35 @@ public class UserService {
     public boolean regexPhone(String phone){
         if (phone.matches("09[0-9]{9}")){
             return true;
+
         }
         else
             return false;
     }
 
+    public void throwPhoneException(){
+        try {
+            throw new InvalidPhoneNumberException();
+        }catch (Exception ex){
+            ex.getMessage();
+        }
+    }
+
     public boolean regexPassword(String password){
         if (password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,20}$")){
+            throwPasswordException();
             return true;
         }
         else
             return false;
+    }
+
+    public void throwPasswordException(){
+        try {
+            throw new WrongPasswordException();
+        }catch (Exception ex){
+            ex.getMessage();
+        }
     }
 
 
@@ -92,6 +112,27 @@ public class UserService {
         for (User u : users){
             if (u.getUsername().equals(username) ||u.getEmail().equals(email) ||u.getPhone().equals(phone)){
                 return false;
+            }
+            if (u.getUsername().equals(username)){
+                try {
+                    throw new UsernameAlreadyExistsException();
+                }catch (Exception ex){
+                    ex.getMessage();
+                }
+            }
+            if (u.getEmail().equals(email)){
+                try {
+                    throw new DataFormatException();
+                }catch (Exception ex){
+                    ex.getMessage();
+                }
+            }
+            if (u.getPhone().equals(phone)){
+                try {
+                    throw new PhonAlreadyExistException();
+                }catch (Exception ex){
+                    ex.getMessage();
+                }
             }
         }
         NormalUser user = new NormalUser(fullName,username,email,phone, password);
@@ -116,9 +157,23 @@ public class UserService {
         if (user == null) {
             return false;
         }
+        if (user == null) {
+            try {
+                throw new UserNotFoundException();
+            }catch (Exception ex){
+                ex.getMessage();
+            }
+        }
 
         if (user.isBlocked()) {
             return false;
+        }
+        if (user.isBlocked()) {
+            try {
+                throw new UserBlockedException();
+            }catch (Exception ex){
+                ex.getMessage();
+            }
         }
 
         currentUser = user;
