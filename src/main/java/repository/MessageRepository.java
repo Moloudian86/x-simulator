@@ -17,8 +17,8 @@ public class MessageRepository implements IRepository<ChatMessage> {
     @Override
     public boolean add(ChatMessage message) {
         String sql = "INSERT INTO tblmessages " +
-                "(sender_id, receiver_id, content, send_time, status) " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "(sender_id, receiver_id, content, status) " +
+                "VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConnectionDB.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -26,8 +26,7 @@ public class MessageRepository implements IRepository<ChatMessage> {
             ps.setInt(1, message.getSender().getId());
             ps.setInt(2, message.getReceiver().getId());
             ps.setString(3, message.getContent());
-            ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-            ps.setString(5, message.getStatus().name());
+            ps.setString(4, message.getStatus().name());
 
             int result = ps.executeUpdate();
 

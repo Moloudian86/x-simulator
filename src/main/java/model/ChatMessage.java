@@ -13,7 +13,6 @@ public class ChatMessage {
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
-        this.status = MessageStatus.SENT;
     }
 
     public int getId() {

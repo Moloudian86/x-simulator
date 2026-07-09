@@ -151,6 +151,8 @@ public class MessageController implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(Main.class.getResource("chat-view.fxml"));
                 Scene scene = new Scene(loader.load());
+                ChatController controller = loader.getController();
+                controller.initChat(user);
 
                 Main.setMainStage(scene);
 
