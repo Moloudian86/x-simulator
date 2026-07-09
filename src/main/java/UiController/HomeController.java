@@ -63,7 +63,8 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnPremium;
 
-
+    @FXML
+    private Button btnMessages;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -167,6 +168,18 @@ public class HomeController implements Initializable {
         setActive(btnPremium);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("premium-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Main.setMainStage(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void btnMessagesAction(ActionEvent event) {
+        setActive(btnMessages);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("message-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Main.setMainStage(scene);
         } catch (IOException e) {

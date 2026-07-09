@@ -229,6 +229,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public List<User> findAllUser(){
+        return userRepository.findAll();
+    }
+
     //وقتی کاربر یه پستیو لایک میکنه
     public void favoriteHashtagsFromPost(User user, Post post) {
         for (Hashtag hashtag : post.getHashtags()){
