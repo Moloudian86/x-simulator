@@ -252,10 +252,12 @@ public class PostviewBuilder {
 
             if (post.getLikeIds().contains(currentUser.getId())) {
                 PostService.getInstance().unlikePost(post,currentUser);
+                post.getLikeIds().remove(Integer.valueOf(currentUser.getId()));
                 currentUser.getLikedPosts().remove(Integer.valueOf(post.getId()));
                 likeButton.getStyleClass().remove("like");
             } else {
                 PostService.getInstance().likePost(post,currentUser);
+                post.getLikeIds().add(currentUser.getId());
                 currentUser.getLikedPosts().add(post.getId());
                 UserService.getInstance().favoriteHashtagsFromPost(currentUser, post);
                 likeButton.getStyleClass().add("like");
