@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
 import java.util.List;
 
-public abstract class User extends Account{
+public abstract class User extends Account implements Serializable {
     private int credit = 20;
     private int token = 150;
     private String bio = "";

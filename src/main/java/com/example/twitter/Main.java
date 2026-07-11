@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import network.ChatServer;
 
 import java.io.IOException;
 
@@ -23,8 +24,10 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("signUp-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("");
+        new Thread(() -> {new ChatServer().start();}).start();
         mainStage.setScene(scene);
         mainStage.show();
+
     }
 
     public static void setMainStage(Scene scene){

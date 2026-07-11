@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Account {
+public abstract class Account implements Serializable {
     private int id;
     private String username;
     private String password;

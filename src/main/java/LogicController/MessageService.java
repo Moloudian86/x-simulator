@@ -8,7 +8,12 @@ import repository.MessageRepository;
 import java.util.List;
 
 public class MessageService {
+    private static final MessageService instance = new MessageService();
     private final MessageRepository messageRepository = new MessageRepository();
+
+    public static MessageService getInstance() {
+        return instance;
+    }
 
     public ChatMessage sendMessage(User sender, User receiver, String content) {
         ChatMessage message = new ChatMessage(sender, receiver, content);

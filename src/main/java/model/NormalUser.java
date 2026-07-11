@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class NormalUser extends User{
+public class NormalUser extends User implements Serializable {
     public NormalUser(String fullName,String username,String email,String phone, String password){
         super(fullName,username,email,phone, password);
     }

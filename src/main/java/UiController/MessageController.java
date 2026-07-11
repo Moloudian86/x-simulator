@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.User;
@@ -138,8 +139,11 @@ public class MessageController implements Initializable {
 
 
     private VBox createUserView(User user) {
+        HBox userProfile = new HBox(10);
+        ImageView profileView = PostviewBuilder.createProfileImageView(user);
         Button username = new Button(user.getUsername());
         username.getStyleClass().add("btnUsername");
+        userProfile.getChildren().addAll(profileView,username);
         Label fullNameText = new Label("Full Name: ");
         Label fullName = new Label(user.getFullName());
         Label bioText = new Label("Bio: ");
@@ -161,7 +165,7 @@ public class MessageController implements Initializable {
             }
 
         });
-        VBox userVbox = new VBox(10,username,fullNameData,bioData);
+        VBox userVbox = new VBox(10,userProfile, fullNameData,bioData);
         userVbox.getStyleClass().add("box");
         return userVbox;
 

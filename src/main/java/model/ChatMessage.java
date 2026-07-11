@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ChatMessage {
+public class ChatMessage implements Serializable {
     private int id;
     private User sender;
     private User receiver;
@@ -13,6 +14,7 @@ public class ChatMessage {
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
+        this.status = MessageStatus.SENT;
     }
 
     public int getId() {
