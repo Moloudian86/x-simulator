@@ -201,7 +201,7 @@ public class HomeController implements Initializable {
     }
 
     private void loadPosts() {
-        List<Post> postsDB = postRepository.findAll();
+        Iterable<Post> postsDB = postRepository.findAll();
         listView.getItems().clear();
         User currentUser = UserService.getCurrentUser();
         List<Post> posts = new ArrayList<>();
