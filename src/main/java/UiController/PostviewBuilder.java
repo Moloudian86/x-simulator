@@ -381,7 +381,7 @@ public class PostviewBuilder {
                 editReplyPost(post);
             }
 
-            post.setEdited(true);
+
         });
 
         return editButton;

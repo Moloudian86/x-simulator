@@ -112,12 +112,15 @@ public class ReplyPostController{
         String text = textAreaReply.getText();
 
         if (editingReply != null) {
+            Post oldPost = new Post(editingReply);
             editingReply.setContent(text);
-            editingReply.setEdited(true);
             HashtagService.getInstance().updateHashtagsForPost(editingReply);
 
             if (selectedFile != null) {
                 editingReply.setMediaPath(selectedFile.getAbsolutePath());
+            }
+            if (editingReply.compareTo(oldPost) != 0) {
+                editingReply.setEdited(true);
             }
             PostService.getInstance().updatePost(editingReply);
             textAreaReply.clear();

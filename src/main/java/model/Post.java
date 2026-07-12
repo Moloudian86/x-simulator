@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Post {
+public class Post implements Comparable<Post>{
 
     private int id;
     private User author;
@@ -24,11 +24,15 @@ public class Post {
     private Duration totalDuration = Duration.ZERO;
     private boolean edited = false;
 
-// رعایت اصل اول سالید : فقط نگه داری داده ها
     public Post(User author,String content){
         this.author = author;
         this.content = content;
         this.creationDate = new Date();
+    }
+
+    public Post(Post other) {
+        this.content = other.content;
+        this.mediaPath = other.mediaPath;
     }
 
     public int getId() {
@@ -162,5 +166,20 @@ public class Post {
 
     public void view(){
         viewCount++;
+    }
+
+    @Override
+    public int compareTo(Post other) {
+        if (!this.getContent().equals(other.getContent())) {
+            return 1;
+        }
+        if (this.getMediaPath() == null && other.getMediaPath() != null) return 1;
+        if (this.getMediaPath() != null && other.getMediaPath() == null) return 1;
+        if (this.getMediaPath() != null && other.getMediaPath() != null) {
+            if (!this.getMediaPath().equals(other.getMediaPath())) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }

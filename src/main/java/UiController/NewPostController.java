@@ -123,11 +123,14 @@ public class NewPostController implements Initializable {
         String text = textArea.getText();
 
         if (editingPost != null) {
+            Post oldPost = new Post(editingPost);
             editingPost.setContent(text);
-            editingPost.setEdited(true);
             HashtagService.getInstance().updateHashtagsForPost(editingPost);
             if (selectedFile != null) {
                 editingPost.setMediaPath(selectedFile.getAbsolutePath());
+            }
+            if (editingPost.compareTo(oldPost) != 0) {
+                editingPost.setEdited(true);
             }
             PostService.getInstance().updatePost(editingPost);
             editingPost = null;
