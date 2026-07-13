@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -54,6 +55,7 @@ public class Chat2Controller implements Initializable {
     private User receiver;
     private ChatClient client = new ChatClient();
     private Timeline timeline;
+    private List<Integer> onlineUsers;
 
 
     private VBox createUserView(User user) {
@@ -62,10 +64,9 @@ public class Chat2Controller implements Initializable {
         Button username = new Button(user.getUsername());
         username.getStyleClass().add("btnUsername");
         Circle online = new Circle(5);
-        if(ChatServer.onlineUsers.containsKey(user.getId())){
+        if (onlineUsers != null && onlineUsers.contains(user.getId())) {
             online.setStyle("-fx-fill: purple;");
-        }
-        else{
+        } else {
             online.setStyle("-fx-fill: gray;");
         }
         userProfile.getChildren().addAll(profileView,online,username);
@@ -86,6 +87,23 @@ public class Chat2Controller implements Initializable {
 
     }
 
+    private void loadUsers() {
+        listViewUsers.getItems().clear();
+        List<User> users = UserService.getInstance().findAllUser();
+        for (User u : users) {
+            if (u.getId() == currentUser.getId())
+                continue;
+            if (u.isBlocked())
+                continue;
+            listViewUsers.getItems().add(createUserView(u));
+        }
+    }
+
+    public void updateOnlineUsers(List<Integer> onlineUsers){
+        this.onlineUsers = onlineUsers;
+        loadUsers();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentUser = UserService.getCurrentUser();
@@ -93,23 +111,15 @@ public class Chat2Controller implements Initializable {
         NetworkPacket registerPacket = new NetworkPacket(RequestType.REGISTER, currentUser);
         client.send(registerPacket);
         timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+            client.send(new NetworkPacket(RequestType.GET_ONLINE_USERS, null));
             if (receiver != null) {
                 loadMessages();
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        List<User> users = UserService.getInstance().findAllUser();
-        for (User u : users) {
-            if (u.getId() == currentUser.getId())
-                continue;
-
-            if (u.isBlocked())
-                continue;
-
-            VBox userBox = createUserView(u);
-            listViewUsers.getItems().add(userBox);
-        }
+        client.send(new NetworkPacket(RequestType.GET_ONLINE_USERS, null));
+        loadUsers();
     }
 
     public void initChat(User receiver) {
@@ -172,16 +182,31 @@ public class Chat2Controller implements Initializable {
         Label content = new Label(msg.getContent());
         Label nike = new Label("✔");
         Label nike2 = new Label("✔✔");
+        Image deleteImg = new Image(PostviewBuilder.class.getResourceAsStream("/img/delet2.png"));
+        ImageView deleteView = new ImageView(deleteImg);
+        deleteView.setFitWidth(20);
+        deleteView.setFitHeight(20);
+        Button deleteBtn = new Button();
+        deleteBtn.setGraphic(deleteView);
+        HBox nikeAndDelete = new HBox(8);
+        nikeAndDelete.setAlignment(Pos.CENTER_RIGHT);
 
         content.setWrapText(true);
         Label time = new Label(msg.getSendTime().toString());
         VBox messageBox = new VBox(8, userProfile, content, time);
         if (msg.getSender().getId() == currentUser.getId()){
             if (msg.getStatus() == MessageStatus.SEEN ){
-                messageBox.getChildren().add(nike2);
+                nikeAndDelete.getChildren().addAll(deleteBtn,nike2);
+                messageBox.getChildren().add(nikeAndDelete);
             }else {
-                messageBox.getChildren().add(nike);
+                nikeAndDelete.getChildren().addAll(deleteBtn,nike);
+                messageBox.getChildren().add(nikeAndDelete);
             }
+            deleteBtn.setOnAction(e -> {
+                NetworkPacket packet = new NetworkPacket(RequestType.DELETE_MESSAGE, msg.getId());
+                client.send(packet);
+            });
+
         }
 
         messageBox.setPrefWidth(300);
@@ -209,6 +234,7 @@ public class Chat2Controller implements Initializable {
 
         return root;
     }
+
     @FXML
     void btnBackAction(ActionEvent event) {
         try {

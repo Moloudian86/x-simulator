@@ -42,4 +42,8 @@ public class MessageService {
             }
         }
     }
+
+    public void deleteMessage(int messageId){
+        messageRepository.remove(messageId);
+    }
 }

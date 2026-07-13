@@ -6,5 +6,7 @@ public enum RequestType {
     GET_CONVERSATION,
     MARK_AS_SEEN,
     NEW_MESSAGE,
+    DELETE_MESSAGE,
+    GET_ONLINE_USERS,
     DISCONNECT
 }

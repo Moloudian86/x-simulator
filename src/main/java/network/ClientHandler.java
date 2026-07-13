@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientHandler implements Runnable{
@@ -101,6 +102,23 @@ public class ClientHandler implements Runnable{
             }catch (Exception ex){
                 ex.printStackTrace();
             }
+        }
+        else if (packet.getRequestType() == RequestType.DELETE_MESSAGE) {
+            int messageId = (int) packet.getData();
+            MessageService.getInstance().deleteMessage(messageId);
+        }
+        else if(packet.getRequestType() == RequestType.GET_ONLINE_USERS){
+            try {
+                List<Integer> onlineUsers = new ArrayList<>(ChatServer.onlineUsers.keySet());
+                NetworkPacket response = new NetworkPacket(RequestType.GET_ONLINE_USERS, onlineUsers);
+                synchronized (output){
+                    output.writeObject(response);
+                    output.flush();
+                }
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+
         }
     }
 }

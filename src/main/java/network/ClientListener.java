@@ -33,6 +33,10 @@ public class ClientListener extends Thread{
                         controller.getListView().getItems().add(box);
                     });
                 }
+                if(packet.getRequestType() == RequestType.GET_ONLINE_USERS){
+                    List<Integer> onlineUsers = (List<Integer>) packet.getData();
+                    Platform.runLater(() -> controller.updateOnlineUsers(onlineUsers));
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
