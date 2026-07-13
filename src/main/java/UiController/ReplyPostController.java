@@ -4,6 +4,7 @@ import LogicController.HashtagService;
 import LogicController.PostService;
 import LogicController.UserService;
 import com.example.twitter.Main;
+import interfaces.IRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ReplyPostController{
-    private final PostRepository postRepository = new PostRepository();
+    private final IRepository<Post> postRepository = new PostRepository();
 
     private Post parentPost;
 

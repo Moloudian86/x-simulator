@@ -1,5 +1,6 @@
 package LogicController;
 
+import interfaces.IRepository;
 import model.*;
 import repository.HashtagRepository;
 import repository.PostRepository;
@@ -11,7 +12,7 @@ import java.util.List;
 public class SearchService {
     private static final SearchService instance = new SearchService();
     private final UserRepository userRepository = new UserRepository();
-    private final PostRepository postRepository = new PostRepository();
+    private final IRepository<Post> postRepository = new PostRepository();
     private final HashtagRepository hashtagRepository = new HashtagRepository();
 
 

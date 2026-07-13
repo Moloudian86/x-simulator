@@ -1,5 +1,6 @@
 package network;
 
+import UiController.Chat2Controller;
 import UiController.ChatController;
 import javafx.scene.layout.VBox;
 import model.ChatMessage;
@@ -10,9 +11,9 @@ import javafx.application.*;
 
 public class ClientListener extends Thread{
     private ObjectInputStream input;
-    private ChatController controller;
+    private Chat2Controller controller;
 
-    public ClientListener(ObjectInputStream input, ChatController controller){
+    public ClientListener(ObjectInputStream input, Chat2Controller controller){
         this.input = input;
         this.controller = controller;
     }

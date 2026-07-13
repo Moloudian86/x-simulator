@@ -3,10 +3,12 @@ package UiController;
 import LogicController.UserService;
 import LogicController.PostService;
 import com.example.twitter.Main;
+import interfaces.IRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -35,7 +37,7 @@ import java.util.ResourceBundle;
 
 
 public class HomeController implements Initializable {
-    private final PostRepository postRepository = new PostRepository();
+    private final IRepository<Post> postRepository = new PostRepository();
 
 
     @FXML
@@ -179,7 +181,7 @@ public class HomeController implements Initializable {
     void btnMessagesAction(ActionEvent event) {
         setActive(btnMessages);
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("message-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("chat2-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Main.setMainStage(scene);
         } catch (IOException e) {

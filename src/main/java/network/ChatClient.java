@@ -1,5 +1,6 @@
 package network;
 
+import UiController.Chat2Controller;
 import UiController.ChatController;
 
 import java.io.ObjectInputStream;
@@ -17,7 +18,7 @@ public class ChatClient implements INetworkConnection {
 
     private ClientListener listener;
 
-    public void connect(ChatController controller) {
+    public void connect(Chat2Controller controller) {
         connect("localhost", 5000);
         listener = new ClientListener(input, controller);
         listener.start();

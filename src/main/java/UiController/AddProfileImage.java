@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import model.User;
+import repository.UserRepository;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,9 @@ public class AddProfileImage {
     @FXML
     private Label fileLable;
     private File selectedFile;
+
+    private final UserRepository userRepository = new UserRepository();
+
 
     @FXML
     void btnAddMediaAction(ActionEvent event) {
@@ -57,6 +61,7 @@ public class AddProfileImage {
         if (selectedFile != null) {
             User user = UserService.getCurrentUser();
             user.setProfileImage(selectedFile.getAbsolutePath());
+            userRepository.update(user.getId(), user);
         }
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("profile-view.fxml"));

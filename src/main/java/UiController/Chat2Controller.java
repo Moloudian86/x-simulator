@@ -7,26 +7,33 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import model.ChatMessage;
 import model.MessageStatus;
 import model.User;
-import LogicController.MessageService;
 import network.ChatClient;
+import network.ChatServer;
 import network.NetworkPacket;
 import network.RequestType;
 
-import javafx.scene.image.ImageView;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.List;
-import javafx.geometry.Pos;
+import java.util.ResourceBundle;
 
-public class ChatController {
+public class Chat2Controller implements Initializable {
 
     @FXML
     private Button btnBack;
@@ -35,26 +42,80 @@ public class ChatController {
     private ListView<VBox> listView;
 
     @FXML
+    private ListView<VBox> listViewUsers;
+
+    @FXML
+    private Button sendMessage;
+
+    @FXML
     private TextArea textArea;
-
-
 
     private User currentUser;
     private User receiver;
     private ChatClient client = new ChatClient();
     private Timeline timeline;
 
-    public void initChat(User receiver) {
-        this.currentUser = UserService.getCurrentUser();
-        this.receiver = receiver;
-        //client.connect(this);
+
+    private VBox createUserView(User user) {
+        HBox userProfile = new HBox(10);
+        ImageView profileView = PostviewBuilder.createProfileImageView(user);
+        Button username = new Button(user.getUsername());
+        username.getStyleClass().add("btnUsername");
+        Circle online = new Circle(5);
+        if(ChatServer.onlineUsers.containsKey(user.getId())){
+            online.setStyle("-fx-fill: purple;");
+        }
+        else{
+            online.setStyle("-fx-fill: gray;");
+        }
+        userProfile.getChildren().addAll(profileView,online,username);
+        Label fullNameText = new Label("Full Name: ");
+        Label fullName = new Label(user.getFullName());
+        Label bioText = new Label("Bio: ");
+        Label bio = new Label(user.getBio());
+
+        HBox fullNameData = new HBox(10,fullNameText, fullName);
+        HBox bioData = new HBox(10,bioText, bio);
+        username.setOnAction(e -> {
+            initChat(user);
+
+        });
+        VBox userVbox = new VBox(10,userProfile, fullNameData,bioData);
+        userVbox.getStyleClass().add("box");
+        return userVbox;
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        currentUser = UserService.getCurrentUser();
+        client.connect(this);
         NetworkPacket registerPacket = new NetworkPacket(RequestType.REGISTER, currentUser);
         client.send(registerPacket);
-        loadMessages();
-        timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> loadMessages()));
-
+        timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+            if (receiver != null) {
+                loadMessages();
+            }
+        }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        List<User> users = UserService.getInstance().findAllUser();
+        for (User u : users) {
+            if (u.getId() == currentUser.getId())
+                continue;
+
+            if (u.isBlocked())
+                continue;
+
+            VBox userBox = createUserView(u);
+            listViewUsers.getItems().add(userBox);
+        }
+    }
+
+    public void initChat(User receiver) {
+        this.receiver = receiver;
+        listView.getItems().clear();
+        loadMessages();
         User[] users = {currentUser, receiver};
         NetworkPacket packet = new NetworkPacket(RequestType.MARK_AS_SEEN, users);
         client.send(packet);
@@ -157,7 +218,7 @@ public class ChatController {
                 timeline.stop();
             }
             client.disconnect();
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("message-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Main.setMainStage(scene);
         } catch (IOException e) {
@@ -168,4 +229,5 @@ public class ChatController {
     public ListView<VBox> getListView() {
         return listView;
     }
+
 }

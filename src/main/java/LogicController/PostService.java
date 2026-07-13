@@ -1,5 +1,6 @@
 package LogicController;
 
+import interfaces.IRepository;
 import model.*;
 import repository.*;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public class PostService {
     private static PostService instance;
     private final UserRepository userRepository = new UserRepository();
-    private final PostRepository postRepository = new PostRepository();
+    private final IRepository<Post> postRepository = new PostRepository();
     private final PostHashtagRepository postHashtagRepository = new PostHashtagRepository();
     private final PostLikeRepository postLikeRepository = new PostLikeRepository();
     private final PostViewRepository postViewRepository = new PostViewRepository();

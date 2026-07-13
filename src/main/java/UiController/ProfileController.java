@@ -1,6 +1,7 @@
 package UiController;
 
 import com.example.twitter.Main;
+import interfaces.IRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
-    private final PostRepository postRepository = new PostRepository();
+    private final IRepository<Post> postRepository = new PostRepository();
 
 
     @FXML

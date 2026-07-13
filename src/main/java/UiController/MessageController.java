@@ -13,7 +13,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import model.User;
+import network.ChatServer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -143,7 +145,14 @@ public class MessageController implements Initializable {
         ImageView profileView = PostviewBuilder.createProfileImageView(user);
         Button username = new Button(user.getUsername());
         username.getStyleClass().add("btnUsername");
-        userProfile.getChildren().addAll(profileView,username);
+        Circle online = new Circle(5);
+        if(ChatServer.onlineUsers.containsKey(user.getId())){
+            online.setStyle("-fx-fill: purple;");
+        }
+        else{
+            online.setStyle("-fx-fill: gray;");
+        }
+        userProfile.getChildren().addAll(profileView,online,username);
         Label fullNameText = new Label("Full Name: ");
         Label fullName = new Label(user.getFullName());
         Label bioText = new Label("Bio: ");

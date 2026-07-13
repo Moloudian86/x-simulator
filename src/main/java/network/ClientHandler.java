@@ -53,7 +53,6 @@ public class ClientHandler implements Runnable{
     }
 
     public void handel(NetworkPacket packet){
-        System.out.println(packet.getRequestType());
         if (packet.getRequestType() == RequestType.REGISTER) {
             currentUser = (User) packet.getData();
             ChatServer.onlineUsers.put(currentUser.getId(), this);
