@@ -65,8 +65,10 @@ public class ClientHandler implements Runnable{
             if (receiverHandler != null) {
                 try {
                     NetworkPacket newMsg = new NetworkPacket(RequestType.NEW_MESSAGE, msg);
-                    receiverHandler.output.writeObject(newMsg);
-                    receiverHandler.output.flush();
+                    synchronized (receiverHandler.output){
+                        receiverHandler.output.writeObject(newMsg);
+                        receiverHandler.output.flush();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -80,8 +82,11 @@ public class ClientHandler implements Runnable{
             List<ChatMessage> messages = MessageService.getInstance().getConversation(u1,u2);
             NetworkPacket respons = new NetworkPacket(RequestType.GET_CONVERSATION, messages);
             try {
-                output.writeObject(respons);
-                output.flush();
+                synchronized (output){
+                    output.writeObject(respons);
+                    output.flush();
+                }
+
             }catch (Exception ex){
                 ex.printStackTrace();
             }

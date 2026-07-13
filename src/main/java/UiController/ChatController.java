@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.ChatMessage;
+import model.MessageStatus;
 import model.User;
 import LogicController.MessageService;
 import network.ChatClient;
@@ -100,12 +101,16 @@ public class ChatController {
 
         userProfile.getChildren().addAll(profileView, username);
         Label content = new Label(msg.getContent());
+
+
         content.setWrapText(true);
         Label time = new Label(msg.getSendTime().toString());
         VBox messageBox = new VBox(8, userProfile, content, time);
 
+
         messageBox.setPrefWidth(300);
         messageBox.setMaxWidth(300);
+
 
         if (msg.getSender().getId() == currentUser.getId()) {
             messageBox.setStyle(" -fx-background-color:#1DA1F2; -fx-background-radius:15; -fx-padding:10; ");

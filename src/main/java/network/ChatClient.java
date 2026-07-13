@@ -38,8 +38,11 @@ public class ChatClient implements INetworkConnection {
     @Override
     public void send(NetworkPacket packet) {
         try {
-            output.writeObject(packet);
-            output.flush();
+            synchronized (output){
+                output.writeObject(packet);
+                output.flush();
+            }
+
         } catch (Exception e) {
         }
     }
