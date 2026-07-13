@@ -112,4 +112,22 @@ public class PremiumService {
         user.setToken(user.getToken()+addToken);
         return true;
     }
+
+    public int calculatePostCost(String text, boolean hasMedia,User user){
+        if (user instanceof NormalUser){
+            int cost = text.length();
+            if (hasMedia) {
+                cost += 10;
+            }
+            return cost;
+        }else if (user instanceof BlueUser){
+            int cost = text.length() / 2;
+            if (hasMedia) {
+                cost += 5;
+            }
+            return cost;
+        }else {
+            return 5;
+        }
+    }
 }

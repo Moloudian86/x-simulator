@@ -2,6 +2,7 @@ package UiController;
 
 import LogicController.HashtagService;
 import LogicController.PostService;
+import LogicController.PremiumService;
 import LogicController.UserService;
 import com.example.twitter.Main;
 import interfaces.IRepository;
@@ -139,7 +140,7 @@ public class ReplyPostController{
         }else {
             hasMedia = false;
         }
-        int cost = currentUser.calculatePostCost(text,hasMedia);
+        int cost = PremiumService.getInstance().calculatePostCost(text,hasMedia,currentUser);
         if (currentUser.getToken() < cost) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error");

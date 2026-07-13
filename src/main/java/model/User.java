@@ -112,8 +112,6 @@ public abstract class User extends Account implements Serializable {
         this.blocked = blocked;
     }
 
-    public abstract int calculatePostCost(String text, boolean hasMedia);
-
     public String getAccType() {
         return accType;
     }

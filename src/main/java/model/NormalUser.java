@@ -7,13 +7,6 @@ public class NormalUser extends User implements Serializable {
     public NormalUser(String fullName,String username,String email,String phone, String password){
         super(fullName,username,email,phone, password);
     }
-    public int calculatePostCost(String text, boolean hasMedia) {
-        int cost = text.length();
-        if (hasMedia) {
-            cost += 10;
-        }
-        return cost;
-    }
 }
 
 // رعایت اصل دوم و سوم :

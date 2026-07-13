@@ -8,13 +8,5 @@ public class BlueUser extends PremiumUser{
         super(fullName,username,email,phone, password);
     }
 
-    @Override
-    public int calculatePostCost(String text, boolean hasMedia) {
-        int cost = text.length() / 2;
-        if (hasMedia) {
-            cost += 5;
-        }
-        return cost;
-    }
 }
 

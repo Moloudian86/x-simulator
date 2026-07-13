@@ -1,6 +1,7 @@
 package UiController;
 
 import LogicController.HashtagService;
+import LogicController.PremiumService;
 import LogicController.UserService;
 import LogicController.PostService;
 import com.example.twitter.Main;
@@ -150,7 +151,7 @@ public class NewPostController implements Initializable {
         }else {
             hasMedia = false;
         }
-        int cost = currentUser.calculatePostCost(text,hasMedia);
+        int cost = PremiumService.getInstance().calculatePostCost(text,hasMedia,currentUser);
         if (currentUser.getToken() < cost) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error");
