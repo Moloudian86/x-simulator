@@ -43,6 +43,10 @@ public class MessageService {
         }
     }
 
+    public int getUnreadCount(User sender, User receiver){
+        return messageRepository.getUnreadCount(sender.getId(), receiver.getId());
+    }
+
     public void deleteMessage(int messageId){
         messageRepository.remove(messageId);
     }

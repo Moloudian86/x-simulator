@@ -117,6 +117,26 @@ public class MessageRepository implements IRepository<ChatMessage> {
         return null;
     }
 
+    public int getUnreadCount(int senderId, int receiverId) {
+        String sql = "SELECT COUNT(*) FROM tblmessages WHERE sender_id=? AND receiver_id=? AND status=?";
+        try (Connection conn = ConnectionDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, senderId);
+            ps.setInt(2, receiverId);
+            ps.setString(3, MessageStatus.SENT.name());
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     private ChatMessage map(ResultSet rs) throws SQLException {
         User sender = userRepository.findById(rs.getInt("sender_id"));
         User receiver = userRepository.findById(rs.getInt("receiver_id"));

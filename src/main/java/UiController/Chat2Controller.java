@@ -27,6 +27,7 @@ import network.ChatClient;
 import network.ChatServer;
 import network.NetworkPacket;
 import network.RequestType;
+import LogicController.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,6 +64,8 @@ public class Chat2Controller implements Initializable {
         ImageView profileView = PostviewBuilder.createProfileImageView(user);
         Button username = new Button(user.getUsername());
         username.getStyleClass().add("btnUsername");
+        int unread = MessageService.getInstance().getUnreadCount(user, currentUser);
+        Label badge = new Label();
         Circle online = new Circle(5);
         if (onlineUsers != null && onlineUsers.contains(user.getId())) {
             online.setStyle("-fx-fill: purple;");
@@ -70,6 +73,11 @@ public class Chat2Controller implements Initializable {
             online.setStyle("-fx-fill: gray;");
         }
         userProfile.getChildren().addAll(profileView,online,username);
+        if(unread > 0){
+            badge.setText(String.valueOf(unread));
+            badge.setStyle("-fx-background-color:red; -fx-text-fill:white; -fx-background-radius:20; -fx-padding:3 8 3 8;");
+            userProfile.getChildren().add(badge);
+        }
         Label fullNameText = new Label("Full Name: ");
         Label fullName = new Label(user.getFullName());
         Label bioText = new Label("Bio: ");
@@ -106,6 +114,16 @@ public class Chat2Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Image sendImg = new Image(PostviewBuilder.class.getResourceAsStream("/img/send2.png"));
+        ImageView sendView = new ImageView(sendImg);
+        sendView.setFitWidth(40);
+        sendView.setFitHeight(40);
+        sendMessage.setGraphic(sendView);
+        if (receiver == null){
+           listView.setVisible(false);
+           sendMessage.setVisible(false);
+           textArea.setVisible(false);
+        }
         currentUser = UserService.getCurrentUser();
         client.connect(this);
         NetworkPacket registerPacket = new NetworkPacket(RequestType.REGISTER, currentUser);
@@ -123,6 +141,9 @@ public class Chat2Controller implements Initializable {
     }
 
     public void initChat(User receiver) {
+        listView.setVisible(true);
+        sendMessage.setVisible(true);
+        textArea.setVisible(true);
         this.receiver = receiver;
         listView.getItems().clear();
         loadMessages();

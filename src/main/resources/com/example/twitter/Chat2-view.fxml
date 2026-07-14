@@ -9,13 +9,13 @@
 <AnchorPane prefHeight="460.0" prefWidth="680.0" stylesheets="@../../../css/StyleHome.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UiController.Chat2Controller">
    <children>
       <ListView fx:id="listViewUsers" prefHeight="432.0" prefWidth="194.0" />
-      <ListView fx:id="listView" layoutX="194.0" layoutY="-1.0" prefHeight="405.0" prefWidth="493.0" />
+      <ListView fx:id="listView" layoutX="194.0" layoutY="-1.0" prefHeight="405.0" prefWidth="493.0" style="-fx-background-color: blac;" />
       <TextArea fx:id="textArea" layoutX="194.0" layoutY="404.0" prefHeight="52.0" prefWidth="493.0" promptText="Message" style="-fx-background-radius: 40;">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </TextArea>
-      <Button fx:id="sendMessage" layoutX="614.0" layoutY="404.0" mnemonicParsing="false" onAction="#sendMessageAction" prefHeight="52.0" prefWidth="68.0" style="-fx-background-radius: 40;" text="Send" />
+      <Button fx:id="sendMessage" layoutX="614.0" layoutY="404.0" mnemonicParsing="false" onAction="#sendMessageAction" prefHeight="52.0" prefWidth="68.0" style="-fx-background-radius: 40; -fx-background-color: black;" />
       <Button fx:id="btnBack" layoutY="433.0" mnemonicParsing="false" onAction="#btnBackAction" prefHeight="25.0" prefWidth="194.0" style="-fx-background-color: #f21d56;" stylesheets="@../../../css/StyleHome.css" text="back" />
    </children>
 </AnchorPane>
