@@ -27,7 +27,6 @@ public class ClientHandler implements Runnable{
         try {
             if (currentUser != null) {
                 ChatServer.onlineUsers.remove(currentUser.getId());
-                System.out.println("User removed: " + currentUser.getId());
             }
             if (socket != null) socket.close();
         } catch (IOException e) {
